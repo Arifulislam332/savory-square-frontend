@@ -19,3 +19,12 @@ export type Restaurant = {
   menuItems: { name: string; price: number }[];
   imageUrl: string;
 };
+
+export type RestaurantSearchRes = {
+  data: Restaurant[];
+  pagination: {
+    total: number;
+    page: number;
+    pages: number;
+  };
+};
