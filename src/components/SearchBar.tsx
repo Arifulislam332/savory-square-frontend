@@ -47,7 +47,7 @@ const SearchBar = ({ onSubmit, placeholder, onReset, searchQuery }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-1 items-center gap-3 border-2 rounded-full p-3"
+        className="flex items-center gap-3 border-2 rounded-full p-3"
       >
         <Search
           size={30}
