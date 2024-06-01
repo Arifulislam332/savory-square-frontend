@@ -7,6 +7,8 @@ export type User = {
   city: string;
 };
 
+export type MenuItem = { name: string; price: number };
+
 export type Restaurant = {
   _id: string;
   user: string;
@@ -16,7 +18,7 @@ export type Restaurant = {
   deliveryPrice: number;
   estimatedDeliveryTime: number;
   cuisines: string[];
-  menuItems: { name: string; price: number }[];
+  menuItems: MenuItem[];
   imageUrl: string;
 };
 
