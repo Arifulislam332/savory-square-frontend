@@ -3,16 +3,59 @@
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
 import MenuItem from "@/components/MenuItem";
+import OderSummery from "@/components/OderSummery";
 import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Card } from "@/components/ui/card";
 import { useGetPublicRestaurant } from "@/hooks/useGetPublicRestaurant";
+import { MenuItem as TMenuItem } from "@/types";
 import Image from "next/image";
+import { useState } from "react";
+
+export interface CartItem {
+  _id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
 
 const RestaurantDetailPage = ({
   params,
 }: {
   params: { restaurantId: string };
 }) => {
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  const addToCart = (menuItem: TMenuItem) => {
+    setCartItems((prevItems) => {
+      const existingCartItem = prevItems.find(
+        (item) => item._id === menuItem._id
+      );
+
+      let updatedCartItems;
+
+      if (existingCartItem) {
+        updatedCartItems = prevItems.map((item) =>
+          item._id === menuItem._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        updatedCartItems = [
+          ...prevItems,
+          {
+            _id: menuItem._id,
+            name: menuItem.name,
+            price: menuItem.price,
+            quantity: 1,
+          },
+        ];
+      }
+
+      return updatedCartItems;
+    });
+  };
+
   const { isLoading, restaurant } = useGetPublicRestaurant(params.restaurantId);
 
   if (isLoading) {
@@ -37,8 +80,18 @@ const RestaurantDetailPage = ({
           <RestaurantInfo restaurant={restaurant} />
           <h6 className="font-bold text-2xl">Menu</h6>
           {restaurant.menuItems.map((item, index) => (
-            <MenuItem key={index} item={item} />
+            <MenuItem
+              key={index + item.name}
+              item={item}
+              addToCart={() => addToCart(item)}
+            />
           ))}
+        </div>
+
+        <div>
+          <Card>
+            <OderSummery restaurant={restaurant} cartItems={cartItems} />
+          </Card>
         </div>
       </div>
     </div>

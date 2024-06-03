@@ -3,11 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 interface Props {
   item: TMenuItem;
+  addToCart: () => void;
 }
 
-const MenuItem = ({ item }: Props) => {
+const MenuItem = ({ item, addToCart }: Props) => {
   return (
-    <Card className="cursor-pointer">
+    <Card className="cursor-pointer" onClick={addToCart}>
       <CardHeader>
         <CardTitle>{item.name}</CardTitle>
       </CardHeader>
