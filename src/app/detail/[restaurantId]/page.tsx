@@ -56,6 +56,59 @@ const RestaurantDetailPage = ({
     });
   };
 
+  const removeFromCart = (cartItem: CartItem) => {
+    setCartItems((prevItems) => {
+      const updatedCartItems = prevItems.filter(
+        (item) => item._id !== cartItem._id
+      );
+
+      return updatedCartItems;
+    });
+  };
+
+  const handleQuantityIncrease = (cartItem: CartItem) => {
+    setCartItems((prevItems) => {
+      const existingCartItem = prevItems.find(
+        (item) => item._id === cartItem._id
+      );
+
+      if (existingCartItem) {
+        const updatedCartItems = prevItems.map((item) =>
+          item._id === cartItem._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+        return updatedCartItems;
+      } else {
+        return [];
+      }
+    });
+  };
+
+  const handleQuantityDecrease = (cartItem: CartItem) => {
+    setCartItems((prevItems) => {
+      const existingCartItem = prevItems.find(
+        (item) => item._id === cartItem._id
+      );
+
+      let updatedCartItems;
+
+      if (existingCartItem && existingCartItem.quantity > 1) {
+        updatedCartItems = prevItems.map((item) =>
+          item._id === cartItem._id
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        );
+      } else {
+        updatedCartItems = prevItems.filter(
+          (item) => item._id !== cartItem._id
+        );
+      }
+
+      return updatedCartItems;
+    });
+  };
+
   const { isLoading, restaurant } = useGetPublicRestaurant(params.restaurantId);
 
   if (isLoading) {
@@ -90,7 +143,13 @@ const RestaurantDetailPage = ({
 
         <div>
           <Card>
-            <OderSummery restaurant={restaurant} cartItems={cartItems} />
+            <OderSummery
+              restaurant={restaurant}
+              cartItems={cartItems}
+              removeFromCart={removeFromCart}
+              handleQuantityIncrease={handleQuantityIncrease}
+              handleQuantityDecrease={handleQuantityDecrease}
+            />
           </Card>
         </div>
       </div>
