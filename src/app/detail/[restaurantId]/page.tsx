@@ -1,12 +1,13 @@
 "use client";
 
+import CheckOutButton from "@/components/CheckOutButton";
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
 import MenuItem from "@/components/MenuItem";
 import OderSummery from "@/components/OderSummery";
 import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Card } from "@/components/ui/card";
+import { Card, CardFooter } from "@/components/ui/card";
 import { useGetPublicRestaurant } from "@/hooks/useGetPublicRestaurant";
 import { MenuItem as TMenuItem } from "@/types";
 import Image from "next/image";
@@ -24,7 +25,13 @@ const RestaurantDetailPage = ({
 }: {
   params: { restaurantId: string };
 }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const storedCartItems = sessionStorage.getItem(
+      `cartItems-${params.restaurantId}`
+    );
+
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
+  });
 
   const addToCart = (menuItem: TMenuItem) => {
     setCartItems((prevItems) => {
@@ -52,6 +59,11 @@ const RestaurantDetailPage = ({
         ];
       }
 
+      sessionStorage.setItem(
+        `cartItems-${params.restaurantId}`,
+        JSON.stringify(updatedCartItems)
+      );
+
       return updatedCartItems;
     });
   };
@@ -60,6 +72,11 @@ const RestaurantDetailPage = ({
     setCartItems((prevItems) => {
       const updatedCartItems = prevItems.filter(
         (item) => item._id !== cartItem._id
+      );
+
+      sessionStorage.setItem(
+        `cartItems-${params.restaurantId}`,
+        JSON.stringify(updatedCartItems)
       );
 
       return updatedCartItems;
@@ -78,6 +95,12 @@ const RestaurantDetailPage = ({
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
+
+        sessionStorage.setItem(
+          `cartItems-${params.restaurantId}`,
+          JSON.stringify(updatedCartItems)
+        );
+
         return updatedCartItems;
       } else {
         return [];
@@ -105,6 +128,11 @@ const RestaurantDetailPage = ({
         );
       }
 
+      sessionStorage.setItem(
+        `cartItems-${params.restaurantId}`,
+        JSON.stringify(updatedCartItems)
+      );
+
       return updatedCartItems;
     });
   };
@@ -118,6 +146,8 @@ const RestaurantDetailPage = ({
   if (!restaurant) {
     return <Error message="Restaurant not found" />;
   }
+
+  const handleCheckOut = () => {};
   return (
     <div className="flex flex-col gap-10">
       <AspectRatio ratio={16 / 5}>
@@ -150,6 +180,12 @@ const RestaurantDetailPage = ({
               handleQuantityIncrease={handleQuantityIncrease}
               handleQuantityDecrease={handleQuantityDecrease}
             />
+            <CardFooter>
+              <CheckOutButton
+                disabled={cartItems.length === 0}
+                onCheckOut={handleCheckOut}
+              />
+            </CardFooter>
           </Card>
         </div>
       </div>
