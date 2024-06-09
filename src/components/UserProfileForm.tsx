@@ -17,6 +17,7 @@ import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import { User } from "@/types";
 import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   email: z.string().optional(),
@@ -32,9 +33,19 @@ interface Props {
   currentUser: User;
   isLoading: boolean;
   onSave: (userProfileData: UserFormDataType) => void;
+  noMargin?: boolean;
+  title?: string;
+  buttonText?: string;
 }
 
-const UserProfileForm = ({ currentUser, isLoading, onSave }: Props) => {
+const UserProfileForm = ({
+  currentUser,
+  isLoading,
+  onSave,
+  buttonText = "Submit",
+  noMargin,
+  title = "Update your profile",
+}: Props) => {
   const form = useForm<UserFormDataType>({
     resolver: zodResolver(formSchema),
     defaultValues: currentUser,
@@ -48,11 +59,14 @@ const UserProfileForm = ({ currentUser, isLoading, onSave }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSave)}
-        className="mt-20 container mx-auto space-y-5"
+        className={cn(
+          "container mx-auto space-y-5",
+          noMargin ? "mt-0" : "mt-20"
+        )}
       >
         <div>
-          <h2 className="font-bold text-2xl">Update your profile</h2>
-          <FormDescription>View and update your profile fields</FormDescription>
+          <h2 className="font-bold text-2xl">{title}</h2>
+          <FormDescription>View and update your informations</FormDescription>
         </div>
 
         <FormField
@@ -130,10 +144,10 @@ const UserProfileForm = ({ currentUser, isLoading, onSave }: Props) => {
           {isLoading ? (
             <span className="flex items-center gap-2">
               <Loader2 size={18} className="animate-spin" />
-              Submitting
+              Processing
             </span>
           ) : (
-            <span>Submit</span>
+            <span>{buttonText}</span>
           )}
         </Button>
       </form>

@@ -6,6 +6,7 @@ import Loading from "@/components/Loading";
 import MenuItem from "@/components/MenuItem";
 import OderSummery from "@/components/OderSummery";
 import RestaurantInfo from "@/components/RestaurantInfo";
+import { UserFormDataType } from "@/components/UserProfileForm";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardFooter } from "@/components/ui/card";
 import { useGetPublicRestaurant } from "@/hooks/useGetPublicRestaurant";
@@ -147,7 +148,9 @@ const RestaurantDetailPage = ({
     return <Error message="Restaurant not found" />;
   }
 
-  const handleCheckOut = () => {};
+  const handleCheckOut = (userFormData: UserFormDataType) => {
+    console.log(userFormData);
+  };
   return (
     <div className="flex flex-col gap-10">
       <AspectRatio ratio={16 / 5}>
