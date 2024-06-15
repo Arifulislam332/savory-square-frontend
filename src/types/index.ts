@@ -30,3 +30,19 @@ export type RestaurantSearchRes = {
     pages: number;
   };
 };
+
+export interface CheckoutSessionReq {
+  cartItems: {
+    menuItemId: string;
+    name: string;
+    quantity: string;
+  }[];
+  deliveryDetails: {
+    name: string;
+    email: string;
+    addressLine1: string;
+    country: string;
+    city: string;
+  };
+  restaurantId: string;
+}
