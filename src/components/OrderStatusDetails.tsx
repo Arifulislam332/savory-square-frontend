@@ -29,10 +29,10 @@ const OrderStatusDetails = ({ order }: Props) => {
         </ul>
       </div>
       <Separator />
-      {order.totalAmout && (
+      {order.totalAmount && (
         <div className=" flex flex-col">
           <span className="font-bold">Total</span>
-          <span>${(order.totalAmout / 100).toFixed(2)}</span>
+          <span>${(order.totalAmount / 100).toFixed(2)}</span>
         </div>
       )}
     </div>

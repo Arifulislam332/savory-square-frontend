@@ -65,7 +65,7 @@ export interface Order {
     city: string;
     country: string;
   };
-  totalAmout: number;
+  totalAmount: number;
   status: OrderStatus;
   createdAt: string;
 }

@@ -133,7 +133,7 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="container mt-20 mx-auto space-y-10"
+        className="container mt-10 mx-auto space-y-10"
       >
         {/* DETAILS SECTION */}
         <div className="space-y-5">
