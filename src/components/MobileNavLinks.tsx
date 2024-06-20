@@ -13,6 +13,9 @@ const MobileNavLinks = () => {
       <Link href="/manage-restaurant" className="hover:text-pink-500">
         Manage Restaurant
       </Link>
+      <Link href="/order-status" className="hover:text-pink-500">
+        Order Status
+      </Link>
       <Button
         onClick={() =>
           logout({ logoutParams: { returnTo: window.location.origin } })

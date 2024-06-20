@@ -1,3 +1,5 @@
+import { OrderStatus } from "@/config";
+
 export type User = {
   _id: string;
   email: string;
@@ -64,5 +66,6 @@ export interface Order {
     country: string;
   };
   totalAmout: number;
-  status: "placed" | "paid" | "inProgress" | "outForDelivery" | "delivered";
+  status: OrderStatus;
+  createdAt: string;
 }
