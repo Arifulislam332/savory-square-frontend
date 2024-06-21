@@ -69,3 +69,8 @@ export interface Order {
   status: OrderStatus;
   createdAt: string;
 }
+
+export type UpdateOrderStatusReq = {
+  orderId: string;
+  status: OrderStatus;
+};

@@ -1,7 +1,10 @@
+import { ORDER_STATUS, OrderStatus } from "@/config";
+import { useUpdateOrderStatus } from "@/hooks/useUpdateOrderStatus";
 import { Order } from "@/types";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
-import { Separator } from "./ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Label } from "./ui/label";
 import {
   Select,
   SelectContent,
@@ -9,14 +12,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Label } from "./ui/label";
-import { ORDER_STATUS } from "@/config";
+import { Separator } from "./ui/separator";
 
 interface Props {
   order: Order;
 }
 
 const OrderItemCart = ({ order }: Props) => {
+  const { isLoading, updateOrderStatus } = useUpdateOrderStatus();
+
+  const [status, setStatus] = useState<OrderStatus>(order.status);
+
+  useEffect(() => {
+    setStatus(order.status);
+  }, [order.status]);
+
+  const handleStatusChange = async (newStatus: OrderStatus) => {
+    await updateOrderStatus({
+      orderId: order._id as string,
+      status: newStatus,
+    });
+
+    setStatus(newStatus);
+  };
   return (
     <Card>
       <CardHeader>
@@ -77,7 +95,11 @@ const OrderItemCart = ({ order }: Props) => {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="status">What is the status of this order?</Label>
-          <Select>
+          <Select
+            value={status}
+            disabled={isLoading}
+            onValueChange={(value) => handleStatusChange(value as OrderStatus)}
+          >
             <SelectTrigger id="status">
               <SelectValue placeholder="Status" />
             </SelectTrigger>

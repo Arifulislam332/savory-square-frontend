@@ -16,8 +16,6 @@ export const useGetMyOrders = () => {
       },
     });
 
-    console.log(res);
-
     if (!res.ok) {
       throw new Error("Failed to get orders");
     }
@@ -29,7 +27,9 @@ export const useGetMyOrders = () => {
     data: orders,
     error,
     isLoading,
-  } = useQuery("fetchOrders", getMyOrdersReq);
+  } = useQuery("fetchOrders", getMyOrdersReq, {
+    refetchInterval: 5000,
+  });
 
   if (error) {
     toast.error(error.toString());
